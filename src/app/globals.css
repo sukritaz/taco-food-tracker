@@ -1,0 +1,341 @@
+@import "tailwindcss";
+
+/*
+  Theme: "Enamel & Kibble".
+  A speckled enamel pet bowl on a plaster kitchen counter — putty base, milk-white
+  enamel surfaces, salmon (wet food / cat nose) as the primary accent and toasted
+  kibble amber as the secondary. Dark mode is not an inversion: it's the same
+  kitchen at 3am, lit by one warm bulb.
+*/
+
+/* Manual theme wins over the system preference; the theme script in layout.tsx
+   stamps data-theme before first paint so there is no flash. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  color-scheme: light;
+
+  --counter: #e9e3dc; /* plaster counter */
+  --counter-deep: #ded6cd;
+  --enamel: #fffdfb; /* bowl white */
+  --enamel-sunk: #f4efe9; /* inset wells inside a card */
+  --rim: #ddd3c9; /* hairline enamel rim */
+  --rim-strong: #c8bcb0;
+  --bowl: #ddd3c8; /* the glazed body of the bowl */
+  --bowl-well: #c6b9ab; /* the shaded well inside it */
+
+  --ink: #241e28; /* plum-black */
+  --ink-soft: #6e6472;
+  --ink-faint: #a99fae;
+
+  --salmon: #e8574c;
+  --salmon-deep: #cd4238;
+  --salmon-wash: #fbe6e3;
+  --kibble: #cf8433;
+  --kibble-deep: #b06e26;
+  --kibble-wash: #f7ead6;
+  --mint: #3d9b7a;
+  --mint-wash: #dff0e8;
+
+  --shadow-card: 0 1px 2px rgba(36, 30, 40, 0.05), 0 10px 30px -18px rgba(36, 30, 40, 0.35);
+  --shadow-lift: 0 2px 6px rgba(36, 30, 40, 0.08), 0 24px 50px -24px rgba(36, 30, 40, 0.45);
+  --speckle: rgba(36, 30, 40, 0.055);
+  --glow-a: #f7ded4;
+  --glow-b: #e4e9dd;
+  --glow-c: #f0e3ee;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --counter: #15121a;
+  --counter-deep: #100d14;
+  --enamel: #201a26;
+  --enamel-sunk: #29222f;
+  --rim: #362d3d;
+  --rim-strong: #493e51;
+  --bowl: #3a3043;
+  --bowl-well: #241d2b;
+
+  --ink: #f3ecf0;
+  --ink-soft: #a99cb0;
+  --ink-faint: #766a7d;
+
+  --salmon: #f5786d;
+  --salmon-deep: #ff8d83;
+  --salmon-wash: #3a2229;
+  --kibble: #e0a155;
+  --kibble-deep: #f0b673;
+  --kibble-wash: #35281f;
+  --mint: #4fbe96;
+  --mint-wash: #1d3229;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.5), 0 12px 32px -20px rgba(0, 0, 0, 0.9);
+  --shadow-lift: 0 2px 8px rgba(0, 0, 0, 0.55), 0 28px 60px -28px rgba(0, 0, 0, 1);
+  --speckle: rgba(255, 255, 255, 0.05);
+  --glow-a: #2c1d28;
+  --glow-b: #171f22;
+  --glow-c: #241a2c;
+}
+
+@theme inline {
+  --color-counter: var(--counter);
+  --color-counter-deep: var(--counter-deep);
+  --color-enamel: var(--enamel);
+  --color-enamel-sunk: var(--enamel-sunk);
+  --color-rim: var(--rim);
+  --color-rim-strong: var(--rim-strong);
+  --color-bowl: var(--bowl);
+  --color-bowl-well: var(--bowl-well);
+
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+
+  --color-salmon: var(--salmon);
+  --color-salmon-deep: var(--salmon-deep);
+  --color-salmon-wash: var(--salmon-wash);
+  --color-kibble: var(--kibble);
+  --color-kibble-deep: var(--kibble-deep);
+  --color-kibble-wash: var(--kibble-wash);
+  --color-mint: var(--mint);
+  --color-mint-wash: var(--mint-wash);
+
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display-face), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+body {
+  background: var(--counter);
+  color: var(--ink);
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Enamel speckle + a warm pool of light, under the cat sketches. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  background:
+    radial-gradient(64rem 44rem at 12% -12%, var(--glow-a) 0%, transparent 62%),
+    radial-gradient(52rem 40rem at 108% 18%, var(--glow-b) 0%, transparent 58%),
+    radial-gradient(46rem 42rem at 46% 118%, var(--glow-c) 0%, transparent 60%);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  opacity: 0.9;
+  background-image:
+    radial-gradient(var(--speckle) 1px, transparent 1.2px),
+    radial-gradient(var(--speckle) 1px, transparent 1.2px);
+  background-size: 22px 22px, 34px 34px;
+  background-position: 0 0, 11px 17px;
+}
+
+/* Focus ring: one shape everywhere, visible on both themes. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--salmon);
+  outline-offset: 2px;
+  border-radius: 0.75rem;
+}
+
+input,
+textarea,
+select {
+  font: inherit;
+  color: var(--ink);
+}
+
+input::placeholder {
+  color: var(--ink-faint);
+}
+
+/* Date inputs keep the native picker legible in dark mode. */
+[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) opacity(0.65);
+}
+
+/* ── Motion ───────────────────────────────────────────────────────────── */
+
+/* Page-load stagger. Sections carry --i for their place in the sequence. */
+@keyframes settle-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.settle {
+  animation: settle-in 0.5s cubic-bezier(0.22, 0.7, 0.3, 1) backwards;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+@keyframes drop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.drop-in {
+  animation: drop-in 0.32s cubic-bezier(0.2, 0.9, 0.3, 1.25) backwards;
+}
+
+/* Cat watermarks: a slow breath and an occasional tail flick. */
+@keyframes cat-breathe {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--rot, 0deg)) scale(1);
+  }
+  50% {
+    transform: translateY(-7px) rotate(var(--rot, 0deg)) scale(1.015);
+  }
+}
+
+@keyframes cat-sway {
+  0%,
+  100% {
+    transform: rotate(calc(var(--rot, 0deg) - 2.5deg));
+  }
+  50% {
+    transform: rotate(calc(var(--rot, 0deg) + 2.5deg));
+  }
+}
+
+.cat-breathe {
+  animation: cat-breathe 7s ease-in-out infinite;
+}
+
+.cat-sway {
+  animation: cat-sway 9s ease-in-out infinite;
+  transform-origin: 60% 80%;
+}
+
+/* Kibble falling into the bowl when a feed lands. */
+@keyframes kibble-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(-38px) rotate(0deg);
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(6px) rotate(160deg);
+  }
+}
+
+.kibble-drop {
+  animation: kibble-drop 0.75s cubic-bezier(0.5, 0, 0.9, 0.5) forwards;
+}
+
+/* The bowl's food surface ripples once after it rises. */
+@keyframes food-ripple {
+  0% {
+    transform: scaleY(1);
+  }
+  35% {
+    transform: scaleY(1.5);
+  }
+  70% {
+    transform: scaleY(0.85);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+.food-ripple {
+  animation: food-ripple 0.9s ease-out;
+  transform-origin: center bottom;
+}
+
+@keyframes sheet-pop {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes veil-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.sheet-pop {
+  animation: sheet-pop 0.26s cubic-bezier(0.2, 0.9, 0.3, 1.25);
+}
+
+.veil-in {
+  animation: veil-in 0.2s ease-out;
+}
+
+/* Tab bar: the active icon hops, once, when you land on it. */
+@keyframes tab-hop {
+  0% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-5px);
+  }
+  70% {
+    transform: translateY(1px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.tab-hop {
+  animation: tab-hop 0.42s cubic-bezier(0.3, 0.9, 0.4, 1.4);
+}
+
+@keyframes pop-check {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.pop-check {
+  animation: pop-check 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
