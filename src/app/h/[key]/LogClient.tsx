@@ -262,7 +262,7 @@ export default function LogClient({
                     <span className="capitalize">{l.food_type}</span>
                     <span suppressHydrationWarning>
                       {" · "}
-                      {new Date(l.fed_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                      {mounted ? clockTime(l.fed_at) : "··:··"}
                     </span>
                     {l.fed_by ? ` · ${l.fed_by}` : ""}
                   </p>
@@ -334,6 +334,11 @@ function useCountUp(value: number) {
   }, [value]);
 
   return shown;
+}
+
+/** Clock time in the reader's timezone. Client-only — the server renders in UTC. */
+function clockTime(iso: string): string {
+  return new Date(iso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
 
 function timeAgo(iso: string): string {
